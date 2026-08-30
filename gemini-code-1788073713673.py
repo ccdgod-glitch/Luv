@@ -95,7 +95,7 @@ st.markdown(hearts_css, unsafe_allow_html=True)
 CORRECT_PIN = "3008"  # รหัสผ่าน 4 หลัก
 START_DATE = datetime.datetime(2023, 6, 30, 0, 0, 0)  # วันที่เริ่มคบกัน
 YOUTUBE_ID = "1Wjpzg0cY2c"  # ID เพลง YouTube
-INSTAGRAM_URL = "https://www.instagram.com/your_username"  # ลิงก์ IG ของคุณ
+INSTAGRAM_URL = "https://www.instagram.com/ross_stae/"  # ลิงก์ IG ของคุณ
 
 
 # --- ตรวจสอบสถานะการปลดล็อก ---
