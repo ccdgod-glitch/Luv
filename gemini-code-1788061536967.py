@@ -14,7 +14,7 @@ CORRECT_PIN = "3008"  # รหัสผ่าน 4 หลัก (เช่น �
 START_DATE = datetime.datetime(2024, 4, 30, 0, 0, 0)  # ปี, เดือน, วัน, ชม, นาที, วินาที ที่เริ่มรักกัน
 
 # 🎵 แค่วางลิงก์ YouTube เพลงโปรดตรงนี้ได้เลยครับ (ก๊อปจากหน้าเว็บหรือแอปมาใส่ได้เลย)
-YOUTUBE_URL = "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+YOUTUBE_URL = "https://www.youtube.com/watch?v=QrA-FttmpUo&list=RDQrA-FttmpUo&start_radio=1"
 
 # --- ตรวจสอบสถานะการปลดล็อก (Session State) ---
 if "authenticated" not in st.session_state:
@@ -37,7 +37,7 @@ if not st.session_state.authenticated:
 # --- 3. หน้าเนื้อหาหลัก (เมื่อปลดล็อกสำเร็จ) ---
 else:
     # เล่นเพลง Background Music
-    st.video("https://www.youtube.com/watch?v=YOUR_YOUTUBE_ID")
+    st.video("https://www.youtube.com/watch?v=QrA-FttmpUo&list=RDQrA-FttmpUo&start_radio=1")
     
     st.title("ถึงคนพิเศษของฉัน ❤️")
     st.subheader("Digital Love Letter 💌")
