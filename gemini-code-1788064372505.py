@@ -3,7 +3,7 @@ import datetime
 
 # --- การตั้งค่าหน้าเว็บ ---
 st.set_page_config(
-    page_title="Our Digital Love Letter ❤️",
+    page_title=" สุขสันต์วันครบรอบนะ ❤️",
     page_icon="💌",
     layout="centered"
 )
@@ -99,10 +99,10 @@ st.markdown(hearts_css, unsafe_allow_html=True)
 
 # --- 1. ตั้งค่าข้อมูลส่วนตัว ---
 CORRECT_PIN = "3008"  # รหัสผ่าน 4 หลัก
-START_DATE = datetime.datetime(2024, 4, 30, 0, 0, 0)
+START_DATE = datetime.datetime(2023, 4, 30, 0, 0, 0)
 
 # 🎵 ใส่ ID วิดีโอ YouTube ที่ต้องการ (เอาเฉพาะรหัสหลัง v= หรือหลัง youtu.be/)
-YOUTUBE_ID = "dQw4w9WgXcQ" 
+YOUTUBE_ID = "Y-ViZ5pTnQQ&list" 
 
 
 # --- ตรวจสอบสถานะการปลดล็อก ---
