@@ -101,8 +101,24 @@ st.markdown(hearts_css, unsafe_allow_html=True)
 CORRECT_PIN = "3008"  # รหัสผ่าน 4 หลัก
 START_DATE = datetime.datetime(2023, 4, 30, 0, 0, 0)
 
-# 🎵 ใส่ ID วิดีโอ YouTube ที่ต้องการ (เอาเฉพาะรหัสหลัง v= หรือหลัง youtu.be/)
-YOUTUBE_ID = "Y-ViZ5pTnQQ&list" 
+# 🎵 เปลี่ยนเป็น YouTube ID ของคุณ
+YOUTUBE_ID = "dQw4w9WgXcQ" 
+
+# --- 3. หน้าเนื้อหาหลัก (เมื่อปลดล็อกแล้ว) ---
+else:
+    # 🎵 เล่นเพลงจาก YouTube อัตโนมัติ (ใส่ mute=1 เพื่อเปิดทางให้นโยบาย Autoplay ของเบราว์เซอร์ผ่านได้)
+    autoplay_embed = f"""
+        <iframe 
+            width="100%" 
+            height="200" 
+            src="https://www.youtube.com/embed/{YOUTUBE_ID}?autoplay=1&mute=1&enablejsapi=1" 
+            title="YouTube video player" 
+            frameborder="0" 
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+            allowfullscreen>
+        </iframe>
+    """
+    st.components.v1.html(autoplay_embed, height=210)
 
 
 # --- ตรวจสอบสถานะการปลดล็อก ---
