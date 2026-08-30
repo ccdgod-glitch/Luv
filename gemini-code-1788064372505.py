@@ -143,20 +143,70 @@ else:
     st.subheader("Digital Love Letter 💌")
     st.write("---")
 
-    # --- ฟีเจอร์ Days Together ---
-    now = datetime.datetime.now()
-    diff = now - START_DATE
-    days = diff.days
-    hours, remainder = divmod(diff.seconds, 3600)
-    minutes, seconds = divmod(remainder, 60)
-
+    # --- ฟีเจอร์ Days Together (Real-time Counter) ---
     st.markdown("### ⏳ เรารักกันมานานแล้ว...")
     
-    col1, col2, col3, col4 = st.columns(4)
-    col1.metric("จำนวนวัน", f"{days} วัน")
-    col2.metric("ชั่วโมง", f"{hours:02d}")
-    col3.metric("นาที", f"{minutes:02d}")
-    col4.metric("วินาที", f"{seconds:02d}")
+    # แปลงวันที่เริ่มคบให้อยู่ในรูปแบบ ISO เพื่อส่งเข้า JavaScript
+    start_iso = START_DATE.strftime("%Y-%m-%dT%H:%M:%S")
+
+    # กล่องแสดงผลแบบ Real-time ขับเคลื่อนด้วย JavaScript
+    realtime_counter_html = f"""
+    <div style="
+        display: flex; 
+        justify-content: space-around; 
+        align-items: center; 
+        background-color: rgba(255, 255, 255, 0.6); 
+        padding: 15px; 
+        border-radius: 12px; 
+        border: 1px solid #e0829d;
+        margin-bottom: 20px;
+        font-family: 'Prompt', sans-serif;">
+        
+        <div style="text-align: center;">
+            <div id="rt-days" style="font-size: 26px; font-weight: bold; color: #c0486b;">0</div>
+            <div style="font-size: 13px; color: #d86b88;">จำนวนวัน</div>
+        </div>
+        <div style="text-align: center;">
+            <div id="rt-hours" style="font-size: 26px; font-weight: bold; color: #c0486b;">00</div>
+            <div style="font-size: 13px; color: #d86b88;">ชั่วโมง</div>
+        </div>
+        <div style="text-align: center;">
+            <div id="rt-mins" style="font-size: 26px; font-weight: bold; color: #c0486b;">00</div>
+            <div style="font-size: 13px; color: #d86b88;">นาที</div>
+        </div>
+        <div style="text-align: center;">
+            <div id="rt-secs" style="font-size: 26px; font-weight: bold; color: #c0486b;">00</div>
+            <div style="font-size: 13px; color: #d86b88;">วินาที</div>
+        </div>
+    </div>
+
+    <script>
+    const startDate = new Date("{start_iso}").getTime();
+
+    function updateCounter() {{
+        const now = new Date().getTime();
+        const diff = now - startDate;
+
+        if (diff > 0) {{
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+            document.getElementById("rt-days").innerText = days;
+            document.getElementById("rt-hours").innerText = String(hours).padStart(2, '0');
+            document.getElementById("rt-mins").innerText = String(minutes).padStart(2, '0');
+            document.getElementById("rt-secs").innerText = String(seconds).padStart(2, '0');
+        }}
+    }}
+
+    updateCounter();
+    setInterval(updateCounter, 1000);
+    </script>
+    """
+    
+    # แสดงผลตัวนับเวลา Real-time ผ่าน HTML Component
+    st.components.v1.html(realtime_counter_html, height=100)
 
     st.write("---")
 
@@ -166,9 +216,9 @@ else:
     ตั้งแต่วันแรกที่ได้รู้จักกัน จนถึงวันนี้ รอยยิ้มของคุณยังคงเป็นสิ่งที่ทำให้โลกของเราสดใสขึ้นเสมอ ✨
 
     ขอบคุณสำหรับความเข้าใจ ความหวังดี และทุกช่วงเวลาที่เราได้เรียนรู้ร่วมกัน  
-    ไม่ว่าจะวันไหนๆ ก็อยากให้อยู่ข้างๆนะครับ 💕
+    ไม่ว่าจะวันไหนๆ ก็อยากให้อยู่ข้างๆ กันแบบนี้ไปนานๆ นะครับ 💕
     """)
 
     # --- ฟีเจอร์ข้อความลับ ---
     with st.expander("คลิกเพื่ออ่านข้อความลับเพิ่มเติม 💌"):
-        st.write("PS. สัญญาว่าจะพาไปกินของอร่อยๆ  รักเเกนะ! 🥰")
+        st.write("PS. สัญญาว่าจะพาไปกินของอร่อยๆ และอยู่ซัพพอร์ตกันแบบนี้ตลอดไปเลย รักคุณนะ! 🥰")
