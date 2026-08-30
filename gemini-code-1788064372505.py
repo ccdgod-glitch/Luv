@@ -8,12 +8,37 @@ st.set_page_config(
     layout="centered"
 )
 
-# --- ใส่ Pure CSS สำหรับเอฟเฟกต์พื้นหลังและหัวใจลอย (ไม่มี JavaScript) ---
+# --- ใส่ Pure CSS สำหรับเอฟเฟกต์พื้นหลัง หัวใจลอย และกำหนดสีตัวหนังสือ ---
 hearts_css = """
 <style>
-/* ตั้งค่าสีพื้นหลังโทนพาสเทลโรแมนติก */
+/* 1. ตั้งค่าสีพื้นหลังโทนพาสเทลโรแมนติก */
 .stApp {
     background: linear-gradient(135deg, #fdfbf7 0%, #f4eae1 100%);
+}
+
+/* 2. เปลี่ยนสีข้อความทั้งหมดบนหน้าเว็บเป็นสีชมพู */
+.stApp, .stApp p, .stApp div, .stApp span, .stApp label {
+    color: #d86b88 !important; /* สีชมพูเข้มอ่านง่าย */
+}
+
+/* 3. เปลี่ยนสีหัวข้อ (Header) ให้เป็นสีชมพูเข้มโดดเด่น */
+h1, h2, h3, h4, h5, h6, .stTitle, .stSubheader {
+    color: #c0486b !important; /* สีชมพูอมแดงกุหลาบ */
+}
+
+/* 4. เปลี่ยนสีตัวเลขในกล่อง Metric (นับวัน) ให้เป็นสีชมพู */
+[data-testid="stMetricValue"] {
+    color: #d86b88 !important;
+}
+
+[data-testid="stMetricLabel"] {
+    color: #e0829d !important;
+}
+
+/* 5. เปลี่ยนสีปุ่มและเส้นขอบให้อยู่ในโทนชมพู */
+.stButton > button {
+    border-color: #e0829d !important;
+    color: #c0486b !important;
 }
 
 /* คอนเทนเนอร์หัวใจ */
