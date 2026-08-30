@@ -8,17 +8,16 @@ st.set_page_config(
     layout="centered"
 )
 
-# --- ใส่ CSS และ JavaScript สำหรับเอฟเฟกต์หัวใจลอยในพื้นหลัง ---
-hearts_css_js = """
+# --- ใส่ Pure CSS สำหรับเอฟเฟกต์พื้นหลังและหัวใจลอย (ไม่มี JavaScript) ---
+hearts_css = """
 <style>
-/* ตั้งค่าให้พื้นหลังหลักรองรับเอฟเฟกต์ */
+/* ตั้งค่าสีพื้นหลังโทนพาสเทลโรแมนติก */
 .stApp {
     background: linear-gradient(135deg, #fdfbf7 0%, #f4eae1 100%);
-    overflow: hidden;
 }
 
-/* คอนเทนเนอร์สำหรับหัวใจลอย */
-.heart-bg {
+/* คอนเทนเนอร์หัวใจ */
+.bg-hearts {
     position: fixed;
     top: 0;
     left: 0;
@@ -29,14 +28,22 @@ hearts_css_js = """
     overflow: hidden;
 }
 
-/* สไตล์ของหัวใจแต่ละดวง */
-.floating-heart {
+/* หัวใจดวงต่างๆ สุ่มตำแหน่งและเวลาด้วย CSS */
+.heart {
     position: absolute;
     bottom: -100px;
     color: rgba(216, 131, 131, 0.35);
+    font-size: 20px;
     animation: floatUp 8s linear infinite;
-    user-select: none;
 }
+
+.heart:nth-child(1) { left: 10%; animation-duration: 7s; animation-delay: 0s; font-size: 16px; }
+.heart:nth-child(2) { left: 25%; animation-duration: 9s; animation-delay: 2s; font-size: 24px; }
+.heart:nth-child(3) { left: 40%; animation-duration: 6s; animation-delay: 4s; font-size: 18px; }
+.heart:nth-child(4) { left: 55%; animation-duration: 10s; animation-delay: 1s; font-size: 22px; }
+.heart:nth-child(5) { left: 70%; animation-duration: 8s; animation-delay: 3s; font-size: 15px; }
+.heart:nth-child(6) { left: 85%; animation-duration: 11s; animation-delay: 5s; font-size: 26px; }
+.heart:nth-child(7) { left: 95%; animation-duration: 7s; animation-delay: 2s; font-size: 20px; }
 
 @keyframes floatUp {
     0% {
@@ -50,37 +57,19 @@ hearts_css_js = """
 }
 </style>
 
-<div class="heart-bg" id="heartContainer"></div>
-
-<script>
-// ฟังก์ชันสุ่มสร้างหัวใจลอยขึ้นมาเรื่อยๆ
-function createHeart() {
-    const heartContainer = document.getElementById('heartContainer');
-    if (!heartContainer) return;
-    
-    const heart = document.createElement('div');
-    heart.classList.add('floating-heart');
-    heart.innerHTML = '♥';
-    
-    // สุ่มตำแหน่ง ขนาด และความเร็ว
-    heart.style.left = Math.random() * 100 + 'vw';
-    heart.style.animationDuration = (Math.random() * 4 + 6) + 's';
-    heart.style.fontSize = (Math.random() * 18 + 12) + 'px';
-    
-    heartContainer.appendChild(heart);
-
-    setTimeout(() => {
-        heart.remove();
-    }, 10000);
-}
-
-// สร้างหัวใจทุกๆ 500 มิลลิวินาที
-setInterval(createHeart, 500);
-</script>
+<div class="bg-hearts">
+    <div class="heart">♥</div>
+    <div class="heart">♥</div>
+    <div class="heart">♥</div>
+    <div class="heart">♥</div>
+    <div class="heart">♥</div>
+    <div class="heart">♥</div>
+    <div class="heart">♥</div>
+</div>
 """
 
-# แสดงผลเอฟเฟกต์หัวใจ
-st.markdown(hearts_css_js, unsafe_allow_html=True)
+# แสดงผลพื้นหลังและเอฟเฟกต์หัวใจ
+st.markdown(hearts_css, unsafe_allow_html=True)
 
 
 # --- 1. ตั้งค่าข้อมูลส่วนตัว ---
@@ -88,7 +77,6 @@ CORRECT_PIN = "1205"  # รหัสผ่าน 4 หลัก
 START_DATE = datetime.datetime(2024, 5, 12, 0, 0, 0)
 
 # 🎵 ใส่ ID วิดีโอ YouTube ที่ต้องการ (เอาเฉพาะรหัสหลัง v= หรือหลัง youtu.be/)
-# ตัวอย่าง: ลิ้งก์ https://www.youtube.com/watch?v=dQw4w9WgXcQ  -> ID คือ dQw4w9WgXcQ
 YOUTUBE_ID = "dQw4w9WgXcQ" 
 
 
