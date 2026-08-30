@@ -37,7 +37,7 @@ if not st.session_state.authenticated:
 # --- 3. หน้าเนื้อหาหลัก (เมื่อปลดล็อกสำเร็จ) ---
 else:
     # เล่นเพลง Background Music
-    st.audio(SONG_URL, format="audio/mp3", autoplay=True)
+    st.video("https://www.youtube.com/watch?v=YOUR_YOUTUBE_ID")
     
     st.title("ถึงคนพิเศษของฉัน ❤️")
     st.subheader("Digital Love Letter 💌")
