@@ -8,15 +8,31 @@ st.set_page_config(
     layout="centered"
 )
 
-# --- ใส่ Pure CSS สำหรับเอฟเฟกต์พื้นหลังและหัวใจลอย (ไม่มี JavaScript) ---
+# --- ใส่ Pure CSS สำหรับพื้นหลัง หัวใจลอย และปรับสีตัวหนังสือเป็นสีชมพู ---
 hearts_css = """
 <style>
-/* ตั้งค่าสีพื้นหลังโทนพาสเทลโรแมนติก */
+/* 1. สีพื้นหลังโทนพาสเทลโรแมนติก */
 .stApp {
     background: linear-gradient(135deg, #fdfbf7 0%, #f4eae1 100%);
 }
 
-/* คอนเทนเนอร์หัวใจ */
+/* 2. เปลี่ยนสีข้อความทั่วไปบนหน้าเว็บเป็นสีชมพู */
+.stApp, .stApp p, .stApp div, .stApp span, .stApp label {
+    color: #d86b88 !important;
+}
+
+/* 3. เปลี่ยนสีหัวข้อให้เป็นสีชมพูอมแดงกุหลาบ */
+h1, h2, h3, h4, h5, h6, .stTitle, .stSubheader {
+    color: #c0486b !important;
+}
+
+/* 4. เปลี่ยนสีปุ่มกด */
+.stButton > button {
+    border-color: #e0829d !important;
+    color: #c0486b !important;
+}
+
+/* คอนเทนเนอร์สำหรับหัวใจลอย */
 .bg-hearts {
     position: fixed;
     top: 0;
@@ -28,7 +44,7 @@ hearts_css = """
     overflow: hidden;
 }
 
-/* หัวใจดวงต่างๆ สุ่มตำแหน่งและเวลาด้วย CSS */
+/* เอฟเฟกต์หัวใจลอยขึ้น */
 .heart {
     position: absolute;
     bottom: -100px;
@@ -68,15 +84,14 @@ hearts_css = """
 </div>
 """
 
-# แสดงผลพื้นหลังและเอฟเฟกต์หัวใจ
 st.markdown(hearts_css, unsafe_allow_html=True)
 
 
 # --- 1. ตั้งค่าข้อมูลส่วนตัว ---
 CORRECT_PIN = "1205"  # รหัสผ่าน 4 หลัก
-START_DATE = datetime.datetime(2024, 5, 12, 0, 0, 0)
+START_DATE = datetime.datetime(2024, 5, 12, 0, 0, 0)  # วันที่เริ่มคบกัน
 
-# 🎵 ใส่ ID วิดีโอ YouTube ที่ต้องการ (เอาเฉพาะรหัสหลัง v= หรือหลัง youtu.be/)
+# 🎵 เปลี่ยน ID เพลง YouTube ตรงนี้ (รหัส 11 หลักหลัง v=)
 YOUTUBE_ID = "dQw4w9WgXcQ" 
 
 
@@ -100,12 +115,12 @@ if not st.session_state.authenticated:
 
 # --- 3. หน้าเนื้อหาหลัก (เมื่อปลดล็อกแล้ว) ---
 else:
-    # 🎵 เล่นเพลงจาก YouTube อัตโนมัติทันทีที่ผ่านหน้ารหัสผ่านเข้ามา
+    # 🎵 แสดงเครื่องเล่น YouTube
     autoplay_embed = f"""
         <iframe 
             width="100%" 
             height="200" 
-            src="https://www.youtube.com/embed/{YOUTUBE_ID}?autoplay=1&mute=0" 
+            src="https://www.youtube.com/embed/{YOUTUBE_ID}?autoplay=1&mute=1&enablejsapi=1" 
             title="YouTube video player" 
             frameborder="0" 
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
@@ -118,24 +133,71 @@ else:
     st.subheader("Digital Love Letter 💌")
     st.write("---")
 
-    # --- ฟีเจอร์ Days Together ---
-    now = datetime.datetime.now()
-    diff = now - START_DATE
-    days = diff.days
-    hours, remainder = divmod(diff.seconds, 3600)
-    minutes, seconds = divmod(remainder, 60)
-
+    # --- ฟีเจอร์นับเวลาแบบ Real-time ---
     st.markdown("### ⏳ เรารักกันมานานแล้ว...")
     
-    col1, col2, col3, col4 = st.columns(4)
-    col1.metric("จำนวนวัน", f"{days} วัน")
-    col2.metric("ชั่วโมง", f"{hours:02d}")
-    col3.metric("นาที", f"{minutes:02d}")
-    col4.metric("วินาที", f"{seconds:02d}")
+    start_iso = START_DATE.strftime("%Y-%m-%dT%H:%M:%S")
+
+    realtime_counter_html = f"""
+    <div style="
+        display: flex; 
+        justify-content: space-around; 
+        align-items: center; 
+        background-color: rgba(255, 255, 255, 0.6); 
+        padding: 15px; 
+        border-radius: 12px; 
+        border: 1px solid #e0829d;
+        margin-bottom: 20px;
+        font-family: sans-serif;">
+        
+        <div style="text-align: center;">
+            <div id="rt-days" style="font-size: 26px; font-weight: bold; color: #c0486b;">0</div>
+            <div style="font-size: 13px; color: #d86b88;">จำนวนวัน</div>
+        </div>
+        <div style="text-align: center;">
+            <div id="rt-hours" style="font-size: 26px; font-weight: bold; color: #c0486b;">00</div>
+            <div style="font-size: 13px; color: #d86b88;">ชั่วโมง</div>
+        </div>
+        <div style="text-align: center;">
+            <div id="rt-mins" style="font-size: 26px; font-weight: bold; color: #c0486b;">00</div>
+            <div style="font-size: 13px; color: #d86b88;">นาที</div>
+        </div>
+        <div style="text-align: center;">
+            <div id="rt-secs" style="font-size: 26px; font-weight: bold; color: #c0486b;">00</div>
+            <div style="font-size: 13px; color: #d86b88;">วินาที</div>
+        </div>
+    </div>
+
+    <script>
+    const startDate = new Date("{start_iso}").getTime();
+
+    function updateCounter() {{
+        const now = new Date().getTime();
+        const diff = now - startDate;
+
+        if (diff > 0) {{
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+            document.getElementById("rt-days").innerText = days;
+            document.getElementById("rt-hours").innerText = String(hours).padStart(2, '0');
+            document.getElementById("rt-mins").innerText = String(minutes).padStart(2, '0');
+            document.getElementById("rt-secs").innerText = String(seconds).padStart(2, '0');
+        }}
+    }}
+
+    updateCounter();
+    setInterval(updateCounter, 1000);
+    </script>
+    """
+    
+    st.components.v1.html(realtime_counter_html, height=100)
 
     st.write("---")
 
-    # --- ฟีเจอร์ Digital Love Letter ---
+    # --- จดหมายรัก ---
     st.markdown("""
     ขอบคุณนะที่เข้ามาเป็นเรื่องราวดีๆ ในทุกๆ วัน  
     ตั้งแต่วันแรกที่ได้รู้จักกัน จนถึงวันนี้ รอยยิ้มของคุณยังคงเป็นสิ่งที่ทำให้โลกของเราสดใสขึ้นเสมอ ✨
@@ -144,6 +206,6 @@ else:
     ไม่ว่าจะวันไหนๆ ก็อยากให้อยู่ข้างๆ กันแบบนี้ไปนานๆ นะครับ 💕
     """)
 
-    # --- ฟีเจอร์ข้อความลับ ---
+    # --- ข้อความลับ ---
     with st.expander("คลิกเพื่ออ่านข้อความลับเพิ่มเติม 💌"):
         st.write("PS. สัญญาว่าจะพาไปกินของอร่อยๆ และอยู่ซัพพอร์ตกันแบบนี้ตลอดไปเลย รักคุณนะ! 🥰")
