@@ -1,0 +1,246 @@
+import streamlit as st
+import datetime
+
+# --- การตั้งค่าหน้าเว็บ ---
+st.set_page_config(
+    page_title="Our Digital Love Letter ❤️",
+    page_icon="💌",
+    layout="centered"
+)
+
+# -----------------------------------------------------------------------------
+# 📸 1. ใส่ลิงก์รูปภาพของคุณตรงนี้ (ต้องเป็นลิงก์รูปภาพโดยตรง เช่น ลงท้ายด้วย .jpg หรือ .png)
+# -----------------------------------------------------------------------------
+PHOTO_URL_1 = "https://images.unsplash.com/photo-1518199266791-5375a83190b7?w=150"
+PHOTO_URL_2 = "https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?w=150"
+
+# -----------------------------------------------------------------------------
+# 🎵 2. เปลี่ยน ID เพลง YouTube ตรงนี้ (เอาเฉพาะรหัส 11 หลักหลัง v=)
+# -----------------------------------------------------------------------------
+YOUTUBE_ID = "dQw4w9WgXcQ" 
+
+# -----------------------------------------------------------------------------
+# 🔒 3. กำหนดรหัสผ่าน และ วันที่เริ่มคบกัน
+# -----------------------------------------------------------------------------
+CORRECT_PIN = "1205"  # รหัสผ่าน 4 หลัก
+START_DATE = datetime.datetime(2023, 5, 12, 0, 0, 0)  # (ปี ค.ศ., เดือน, วัน, ชม., นาที, วินาที)
+
+
+# --- ใส่ Pure CSS สำหรับพื้นหลัง หัวใจ และ รูปภาพลอย ---
+hearts_css = f"""
+<style>
+/* สีพื้นหลังโทนพาสเทลโรแมนติก */
+.stApp {{
+    background: linear-gradient(135deg, #fdfbf7 0%, #f4eae1 100%);
+}}
+
+/* เปลี่ยนสีข้อความทั่วไปเป็นสีชมพู */
+.stApp, .stApp p, .stApp div, .stApp span, .stApp label {{
+    color: #d86b88 !important;
+}}
+
+/* เปลี่ยนสีหัวข้อ */
+h1, h2, h3, h4, h5, h6, .stTitle, .stSubheader {{
+    color: #c0486b !important;
+}}
+
+/* เปลี่ยนสีปุ่มกด */
+.stButton > button {{
+    border-color: #e0829d !important;
+    color: #c0486b !important;
+}}
+
+/* คอนเทนเนอร์สำหรับองค์ประกอบลอย */
+.bg-hearts {{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+}}
+
+/* เอฟเฟกต์หัวใจลอยขึ้น */
+.heart {{
+    position: absolute;
+    bottom: -100px;
+    color: rgba(216, 131, 131, 0.35);
+    font-size: 20px;
+    animation: floatUp 8s linear infinite;
+}}
+
+/* เอฟเฟกต์รูปภาพลอยขึ้น */
+.floating-img {{
+    position: absolute;
+    bottom: -120px;
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    border: 2px solid rgba(224, 130, 157, 0.8);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    object-fit: cover;
+    opacity: 0.75;
+    animation: floatUp 10s linear infinite;
+}}
+
+/* สุ่มตำแหน่งและเวลาลอย */
+.heart:nth-child(1) {{ left: 10%; animation-duration: 7s; animation-delay: 0s; font-size: 16px; }}
+.heart:nth-child(2) {{ left: 30%; animation-duration: 9s; animation-delay: 2s; font-size: 24px; }}
+.heart:nth-child(3) {{ left: 50%; animation-duration: 6s; animation-delay: 4s; font-size: 18px; }}
+.heart:nth-child(4) {{ left: 70%; animation-duration: 10s; animation-delay: 1s; font-size: 22px; }}
+.heart:nth-child(5) {{ left: 90%; animation-duration: 8s; animation-delay: 3s; font-size: 15px; }}
+
+.floating-img:nth-child(6) {{ left: 20%; animation-duration: 9s; animation-delay: 1s; }}
+.floating-img:nth-child(7) {{ left: 60%; animation-duration: 11s; animation-delay: 4s; }}
+.floating-img:nth-child(8) {{ left: 80%; animation-duration: 8s; animation-delay: 2s; }}
+
+@keyframes floatUp {{
+    0% {{
+        transform: translateY(0) rotate(0deg);
+        opacity: 0.75;
+    }}
+    50% {{
+        transform: translateY(-50vh) rotate(15deg);
+        opacity: 0.85;
+    }}
+    100% {{
+        transform: translateY(-110vh) rotate(-15deg);
+        opacity: 0;
+    }}
+}}
+</style>
+
+<div class="bg-hearts">
+    <div class="heart">♥</div>
+    <div class="heart">♥</div>
+    <div class="heart">♥</div>
+    <div class="heart">♥</div>
+    <div class="heart">♥</div>
+    
+    <!-- รูปภาพลอยขึ้นฟ้า -->
+    <img src="{PHOTO_URL_1}" class="floating-img">
+    <img src="{PHOTO_URL_2}" class="floating-img">
+    <img src="{PHOTO_URL_1}" class="floating-img">
+</div>
+"""
+
+st.markdown(hearts_css, unsafe_allow_html=True)
+
+
+# --- ตรวจสอบสถานะการปลดล็อก ---
+if "authenticated" not in st.session_state:
+    st.session_state.authenticated = False
+
+# --- หน้ากรอกรหัสผ่าน ---
+if not st.session_state.authenticated:
+    st.title("Our Secret Code 🔒")
+    st.caption("กรอกวันครบรอบของเราเพื่อเข้าสู่ความทรงจำ (4 หลัก)")
+    
+    pin_input = st.text_input("Passcode", type="password", max_chars=4, placeholder="••••")
+    
+    if st.button("ตกลง", use_container_width=True):
+        if pin_input == CORRECT_PIN:
+            st.session_state.authenticated = True
+            st.rerun()
+        else:
+            st.error("รหัสผ่านไม่ถูกต้อง ลองใหม่อีกครั้งนะ!")
+
+# --- หน้าเนื้อหาหลัก (เมื่อปลดล็อกแล้ว) ---
+else:
+    # 🎵 ซ่อนหน้าต่าง YouTube + เล่นอัตโนมัติ + วนซ้ำ (Loop)
+    hidden_audio_html = f"""
+        <div style="display: none; height: 0px; width: 0px; overflow: hidden;">
+            <iframe 
+                width="0" 
+                height="0" 
+                src="https://www.youtube.com/embed/{YOUTUBE_ID}?autoplay=1&mute=0&loop=1&playlist={YOUTUBE_ID}&enablejsapi=1" 
+                title="Hidden Audio Player" 
+                frameborder="0" 
+                allow="autoplay; encrypted-media">
+            </iframe>
+        </div>
+    """
+    st.components.v1.html(hidden_audio_html, height=0, width=0)
+
+    st.title("ถึงคนพิเศษของฉัน ❤️")
+    st.subheader("Digital Love Letter 💌")
+    st.write("---")
+
+    # --- ตัวนับเวลา Real-time ---
+    st.markdown("### ⏳ เรารักกันมานานแล้ว...")
+    
+    start_iso = START_DATE.strftime("%Y-%m-%dT%H:%M:%S")
+
+    realtime_counter_html = f"""
+    <div style="
+        display: flex; 
+        justify-content: space-around; 
+        align-items: center; 
+        background-color: rgba(255, 255, 255, 0.6); 
+        padding: 15px; 
+        border-radius: 12px; 
+        border: 1px solid #e0829d;
+        margin-bottom: 20px;
+        font-family: sans-serif;">
+        
+        <div style="text-align: center;">
+            <div id="rt-days" style="font-size: 26px; font-weight: bold; color: #c0486b;">0</div>
+            <div style="font-size: 13px; color: #d86b88;">จำนวนวัน</div>
+        </div>
+        <div style="text-align: center;">
+            <div id="rt-hours" style="font-size: 26px; font-weight: bold; color: #c0486b;">00</div>
+            <div style="font-size: 13px; color: #d86b88;">ชั่วโมง</div>
+        </div>
+        <div style="text-align: center;">
+            <div id="rt-mins" style="font-size: 26px; font-weight: bold; color: #c0486b;">00</div>
+            <div style="font-size: 13px; color: #d86b88;">นาที</div>
+        </div>
+        <div style="text-align: center;">
+            <div id="rt-secs" style="font-size: 26px; font-weight: bold; color: #c0486b;">00</div>
+            <div style="font-size: 13px; color: #d86b88;">วินาที</div>
+        </div>
+    </div>
+
+    <script>
+    const startDate = new Date("{start_iso}").getTime();
+
+    function updateCounter() {{
+        const now = new Date().getTime();
+        const diff = now - startDate;
+
+        if (diff > 0) {{
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+            document.getElementById("rt-days").innerText = days;
+            document.getElementById("rt-hours").innerText = String(hours).padStart(2, '0');
+            document.getElementById("rt-mins").innerText = String(minutes).padStart(2, '0');
+            document.getElementById("rt-secs").innerText = String(seconds).padStart(2, '0');
+        }}
+    }}
+
+    updateCounter();
+    setInterval(updateCounter, 1000);
+    </script>
+    """
+    
+    st.components.v1.html(realtime_counter_html, height=100)
+
+    st.write("---")
+
+    # --- จดหมายรัก ---
+    st.markdown("""
+    ขอบคุณนะที่เข้ามาเป็นเรื่องราวดีๆ ในทุกๆ วัน  
+    ตั้งแต่วันแรกที่ได้รู้จักกัน จนถึงวันนี้ รอยยิ้มของคุณยังคงเป็นสิ่งที่ทำให้โลกของเราสดใสขึ้นเสมอ ✨
+
+    ขอบคุณสำหรับความเข้าใจ ความหวังดี และทุกช่วงเวลาที่เราได้เรียนรู้ร่วมกัน  
+    ไม่ว่าจะวันไหนๆ ก็อยากให้อยู่ข้างๆ กันแบบนี้ไปนานๆ นะครับ 💕
+    """)
+
+    # --- ข้อความลับ ---
+    with st.expander("คลิกเพื่ออ่านข้อความลับเพิ่มเติม 💌"):
+        st.write("PS. สัญญาว่าจะพาไปกินของอร่อยๆ และอยู่ซัพพอร์ตกันแบบนี้ตลอดไปเลย รักคุณนะ! 🥰")
