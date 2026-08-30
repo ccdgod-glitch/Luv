@@ -210,7 +210,7 @@ else:
     """)
 
     # --- ปุ่มลิงก์ไปยัง Instagram ---
-    st.link_button("📸 ไปที่ Instagram ของเรา", https://www.instagram.com/ross_stae/, use_container_width=True)
+    st.link_button("📸 ไปที่ Instagram ของเรา", INSTAGRAM_URL, use_container_width=True)
 
     # --- ข้อความลับ ---
     with st.expander("คลิกเพื่ออ่านข้อความลับเพิ่มเติม 💌"):
