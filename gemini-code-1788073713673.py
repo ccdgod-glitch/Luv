@@ -118,22 +118,19 @@ if not st.session_state.authenticated:
 
 # --- 3. หน้าเนื้อหาหลัก (เมื่อปลดล็อกแล้ว) ---
 else:
-    # 🎵 เล่นเพลงอัตโนมัติทันทีที่กดเข้าหน้าเนื้อหา (ผ่านการ Trigger จากปุ่มปลดล็อก)
-    auto_play_html = f"""
-    <div style="text-align: center; margin-bottom: 15px;">
-        <iframe 
-            id="youtube-player"
-            width="100%" 
-            height="80" 
-            src="https://www.youtube.com/embed/{YOUTUBE_ID}?autoplay=1&enablejsapi=1&loop=1&playlist={YOUTUBE_ID}" 
-            title="YouTube Audio Player" 
-            frameborder="0" 
-            allow="autoplay; encrypted-media" 
-            style="border-radius: 12px; border: 1px solid #e0829d;">
-        </iframe>
-    </div>
+    # 🎵 ซ่อนหน้าต่างวิดีโอแบบสมบูรณ์แบบ (1x1 px / opacity 0) แต่ให้เพลงเล่นต่อเนื่อง
+    hidden_audio_html = f"""
+    <iframe 
+        width="1" 
+        height="1" 
+        src="https://www.youtube.com/embed/{YOUTUBE_ID}?autoplay=1&loop=1&playlist={YOUTUBE_ID}&enablejsapi=1" 
+        title="Background Audio" 
+        frameborder="0" 
+        allow="autoplay; encrypted-media" 
+        style="position: absolute; opacity: 0; pointer-events: none;">
+    </iframe>
     """
-    st.components.v1.html(auto_play_html, height=95)
+    st.components.v1.html(hidden_audio_html, height=0, width=0)
 
     st.title("ถึงคนพิเศษของผม ❤️")
     st.subheader("สุขสันต์วันครบรอบนะ 💌")
