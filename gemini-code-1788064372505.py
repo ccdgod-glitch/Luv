@@ -102,7 +102,7 @@ CORRECT_PIN = "3008"  # รหัสผ่าน 4 หลัก
 START_DATE = datetime.datetime(2023, 4, 30, 0, 0, 0)
 
 # 🎵 เปลี่ยนเป็น YouTube ID ของคุณ
-YOUTUBE_ID = "dQw4w9WgXcQ" 
+YOUTUBE_ID = "Y-ViZ5pTnQQ&list" 
 
 # --- 3. หน้าเนื้อหาหลัก (เมื่อปลดล็อกแล้ว) ---
 else:
