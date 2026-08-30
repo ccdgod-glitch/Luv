@@ -129,8 +129,8 @@ else:
     """
     st.components.v1.html(autoplay_embed, height=210)
 
-    st.title("ถึงคนพิเศษของฉัน ❤️")
-    st.subheader("Digital Love Letter 💌")
+    st.title("ถึงคนพิเศษของผม ❤️")
+    st.subheader(" สุขสันต์วันครบรอบนะครับ 💌")
     st.write("---")
 
     # --- ฟีเจอร์นับเวลาแบบ Real-time ---
