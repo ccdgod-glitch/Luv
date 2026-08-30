@@ -92,7 +92,7 @@ CORRECT_PIN = "3008"  # รหัสผ่าน 4 หลัก
 START_DATE = datetime.datetime(2023, 6, 30, 0, 0, 0)  # วันที่เริ่มคบกัน
 
 # 🎵 เปลี่ยน ID เพลง YouTube ตรงนี้ (รหัส 11 หลักหลัง v=)
-YOUTUBE_ID = "Y-ViZ5pTnQQ" 
+YOUTUBE_ID = "1Wjpzg0cY2c" 
 
 
 # --- ตรวจสอบสถานะการปลดล็อก ---
@@ -115,24 +115,24 @@ if not st.session_state.authenticated:
 
 # --- 3. หน้าเนื้อหาหลัก (เมื่อปลดล็อกแล้ว) ---
 else:
-    # 🎵 แสดงเครื่องเล่น YouTube
-    autoplay_embed = f"""
-        <iframe 
-            width="100%" 
-            height="200" 
-            src="https://www.youtube.com/embed/{YOUTUBE_ID}?autoplay=1&mute=1&enablejsapi=1" 
-            title="YouTube video player" 
-            frameborder="0" 
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-            allowfullscreen>
-        </iframe>
+    # 🎵 ซ่อนหน้าต่าง YouTube + เล่นอัตโนมัติ + วนซ้ำ (Loop) ตลอดเวลา
+    hidden_audio_html = f"""
+        <div style="display: none; height: 0px; width: 0px; overflow: hidden;">
+            <iframe 
+                width="0" 
+                height="0" 
+                src="https://www.youtube.com/embed/{YOUTUBE_ID}?autoplay=1&mute=0&loop=1&playlist={YOUTUBE_ID}&enablejsapi=1" 
+                title="Hidden Audio Player" 
+                frameborder="0" 
+                allow="autoplay; encrypted-media">
+            </iframe>
+        </div>
     """
-    st.components.v1.html(autoplay_embed, height=210)
+    st.components.v1.html(hidden_audio_html, height=0, width=0)
 
     st.title("ถึงคนพิเศษของผม ❤️")
-    st.subheader(" สุขสันต์วันครบรอบนะครับ 💌")
+    st.subheader(" สุขสันต์วันครบรอบนะ 💌")
     st.write("---")
-
     # --- ฟีเจอร์นับเวลาแบบ Real-time ---
     st.markdown("### ⏳ เรารักกันมานานแล้ว...")
     
