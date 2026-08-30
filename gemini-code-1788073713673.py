@@ -21,28 +21,23 @@ st.components.v1.html(
 # --- ใส่ Pure CSS สำหรับพื้นหลัง และหัวใจลอย ---
 hearts_css = """
 <style>
-/* 1. สีพื้นหลังโทนพาสเทลโรแมนติก */
 .stApp {
     background: linear-gradient(135deg, #fdfbf7 0%, #f4eae1 100%);
 }
 
-/* 2. เปลี่ยนสีข้อความทั่วไปบนหน้าเว็บเป็นสีชมพู */
 .stApp, .stApp p, .stApp div, .stApp span, .stApp label {
     color: #d86b88 !important;
 }
 
-/* 3. เปลี่ยนสีหัวข้อให้เป็นสีชมพูอมแดงกุหลาบ */
 h1, h2, h3, h4, h5, h6, .stTitle, .stSubheader {
     color: #c0486b !important;
 }
 
-/* 4. เปลี่ยนสีปุ่มกด */
 .stButton > button {
     border-color: #e0829d !important;
     color: #c0486b !important;
 }
 
-/* คอนเทนเนอร์สำหรับหัวใจลอย */
 .bg-hearts {
     position: fixed;
     top: 0;
@@ -54,7 +49,6 @@ h1, h2, h3, h4, h5, h6, .stTitle, .stSubheader {
     overflow: hidden;
 }
 
-/* เอฟเฟกต์หัวใจลอยขึ้น */
 .heart {
     position: absolute;
     bottom: -100px;
@@ -101,7 +95,7 @@ st.markdown(hearts_css, unsafe_allow_html=True)
 CORRECT_PIN = "3008"  # รหัสผ่าน 4 หลัก
 START_DATE = datetime.datetime(2023, 6, 30, 0, 0, 0)  # วันที่เริ่มคบกัน
 YOUTUBE_ID = "1Wjpzg0cY2c"  # ID เพลง YouTube
-INSTAGRAM_URL = "https://www.instagram.com/your_username"  # 👈 เปลี่ยนเป็นลิงก์ IG ของคุณ
+INSTAGRAM_URL = "https://www.instagram.com/your_username"  # ลิงก์ IG ของคุณ
 
 
 # --- ตรวจสอบสถานะการปลดล็อก ---
@@ -124,30 +118,25 @@ if not st.session_state.authenticated:
 
 # --- 3. หน้าเนื้อหาหลัก (เมื่อปลดล็อกแล้ว) ---
 else:
-    st.title("ถึงคนพิเศษของผม ❤️")
-    st.subheader("สุขสันต์วันครบรอบนะ 💌")
-    st.write("---")
-
-    # 🎵 เครื่องเล่นเพลงแบบที่รองรับเบราว์เซอร์บนโทรศัพท์มือถือ 100%
-    st.markdown("### 🎵 เพลงของเรา")
-    st.caption("แตะปุ่มกดเล่นเพลงด้านล่างได้เลยนะ 💕")
-    
-    audio_player_html = f"""
-    <div style="text-align: center; margin: 10px 0;">
+    # 🎵 เล่นเพลงอัตโนมัติทันทีที่กดเข้าหน้าเนื้อหา (ผ่านการ Trigger จากปุ่มปลดล็อก)
+    auto_play_html = f"""
+    <div style="text-align: center; margin-bottom: 15px;">
         <iframe 
+            id="youtube-player"
             width="100%" 
-            height="180" 
-            src="https://www.youtube.com/embed/{YOUTUBE_ID}?enablejsapi=1" 
+            height="80" 
+            src="https://www.youtube.com/embed/{YOUTUBE_ID}?autoplay=1&enablejsapi=1&loop=1&playlist={YOUTUBE_ID}" 
             title="YouTube Audio Player" 
             frameborder="0" 
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-            allowfullscreen
-            style="border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+            allow="autoplay; encrypted-media" 
+            style="border-radius: 12px; border: 1px solid #e0829d;">
         </iframe>
     </div>
     """
-    st.components.v1.html(audio_player_html, height=200)
+    st.components.v1.html(auto_play_html, height=95)
 
+    st.title("ถึงคนพิเศษของผม ❤️")
+    st.subheader("สุขสันต์วันครบรอบนะ 💌")
     st.write("---")
 
     # --- ฟีเจอร์นับเวลาแบบ Real-time ---
